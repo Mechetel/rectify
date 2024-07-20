@@ -1,4 +1,6 @@
-require File.expand_path('../lib/rectify/version', __FILE__)
+# frozen_string_literal: true
+
+require_relative 'lib/rectify/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'rectify'
