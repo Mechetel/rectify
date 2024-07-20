@@ -15,7 +15,7 @@ module Rectify
       !valid?
     end
 
-    def method_missing(method_name, *args, &)
+    def method_missing(method_name, *args, &_block)
       if attributes.key?(method_name)
         attributes[method_name]
       elsif method_name.to_s.ends_with?('=')

@@ -34,8 +34,8 @@ module Rectify
       cached_query.first
     end
 
-    def each(&)
-      cached_query.each(&)
+    def each(&block)
+      cached_query.each(&block)
     end
 
     def exists?

@@ -6,7 +6,7 @@ module Rectify
       @events = {}
     end
 
-    def method_missing(method_name, *args, &)
+    def method_missing(method_name, *args, &_block)
       args = args.first if args.size == 1
       @events[method_name] = args
     end
@@ -19,12 +19,12 @@ module Rectify
   class Command
     include Wisper::Publisher
 
-    def self.call(*, **, &)
+    def self.call(*args, **kwargs, &block)
       event_recorder = EventRecorder.new
 
-      command = new(*, **)
+      command = new(*args, **kwargs)
       command.subscribe(event_recorder)
-      command.evaluate(&) if block_given?
+      command.evaluate(&block) if block
       command.call
 
       event_recorder.events
@@ -35,8 +35,8 @@ module Rectify
       instance_eval(&block)
     end
 
-    def transaction(&)
-      ActiveRecord::Base.transaction(&) if block_given?
+    def transaction(&block)
+      ActiveRecord::Base.transaction(&block) if block
     end
 
     def method_missing(method_name, ...)

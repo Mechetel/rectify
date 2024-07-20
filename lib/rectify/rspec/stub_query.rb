@@ -1,8 +1,7 @@
 module Rectify
   module RSpec
     class StubQuery < Query
-      def initialize(results)
-        super
+      def initialize(results) # rubocop:disable Lint/MissingSuper
         @results = Array(results)
       end
 
