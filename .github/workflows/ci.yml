@@ -1,0 +1,41 @@
+name: 'Ruby on Rails CI'
+on:
+  push:
+    branches: [ 'master' ]
+  pull_request:
+    branches: [ 'master' ]
+
+jobs:
+  test:
+    name: rspec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Install Sqlite3
+        run: sudo apt-get install sqlite3 libsqlite3-dev
+      - name: Setup Database
+        run: bundle exec rake db:migrate
+      - name: Build and test with rspec
+        run: bundle exec rspec
+
+  lint:
+    name: linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Install dependencies
+        run: bundle install
+      - name: Rubocop
+        run: bundle exec rubocop --parallel
