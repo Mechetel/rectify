@@ -10,6 +10,8 @@ jobs:
     name: rspec
     runs-on: ubuntu-latest
     steps:
+      - name: Install Sqlite3
+        run: sudo apt-get install sqlite3 libsqlite3-dev
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install Ruby and gems
@@ -17,8 +19,6 @@ jobs:
         with:
           ruby-version: 3.2.4
           bundler-cache: true
-      - name: Install Sqlite3
-        run: sudo apt-get install sqlite3 libsqlite3-dev
       - name: Setup Database
         run: bundle exec rake db:migrate
       - name: Build and test with rspec
@@ -28,6 +28,8 @@ jobs:
     name: linter
     runs-on: ubuntu-latest
     steps:
+      - name: Install Sqlite3
+        run: sudo apt-get install sqlite3 libsqlite3-dev
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install Ruby and gems
