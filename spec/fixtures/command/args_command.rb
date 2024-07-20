@@ -1,3 +1,15 @@
 class ArgsCommand < Rectify::Command
-  def initialize(_, _, _); end
+  def initialize(a, b, c) # rubocop:disable Lint/MissingSuper
+    @a = a
+    @b = b
+    @c = c
+  end
+
+  def call
+    [a, b, c].join(' ')
+  end
+
+  private
+
+  attr_reader :a, :b, :c
 end

@@ -6,12 +6,10 @@ module Rectify
       @events = {}
     end
 
-    # rubocop:disable Style/MethodMissing
-    def method_missing(method_name, *args, &_block)
+    def method_missing(method_name, *args, &)
       args = args.first if args.size == 1
       @events[method_name] = args
     end
-    # rubocop:enable Style/MethodMissing
 
     def respond_to_missing?(_method_name, _include_private = false)
       true
@@ -21,29 +19,29 @@ module Rectify
   class Command
     include Wisper::Publisher
 
-    def self.call(*args, &block)
+    def self.call(*, **, &)
       event_recorder = EventRecorder.new
 
-      command = new(*args)
+      command = new(*, **)
       command.subscribe(event_recorder)
-      command.evaluate(&block) if block_given?
+      command.evaluate(&) if block_given?
       command.call
 
       event_recorder.events
     end
 
     def evaluate(&block)
-      @caller = eval("self", block.binding, __FILE__, __LINE__)
+      @caller = eval('self', block.binding, __FILE__, __LINE__)
       instance_eval(&block)
     end
 
-    def transaction(&block)
-      ActiveRecord::Base.transaction(&block) if block_given?
+    def transaction(&)
+      ActiveRecord::Base.transaction(&) if block_given?
     end
 
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, ...)
       if @caller.respond_to?(method_name, true)
-        @caller.send(method_name, *args, &block)
+        @caller.send(method_name, ...)
       else
         super
       end

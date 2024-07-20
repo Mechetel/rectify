@@ -1,6 +1,12 @@
 inherit_from: .rubocop_todo.yml
 
+require:
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rake
+
 AllCops:
+  NewCops: enable
   Exclude:
     - 'bin/**/*'
     - 'spec/db/schema.rb'
@@ -8,13 +14,7 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
-Style/HashSyntax:
-  EnforcedStyle: hash_rockets
-
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 Layout/MultilineOperationIndentation:
@@ -24,7 +24,7 @@ Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
 Layout/IndentationWidth:
-  Width: 2  
+  Width: 2
 
 Metrics/ClassLength:
   Max: 115
@@ -34,3 +34,12 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 25
+
+RSpec/NestedGroups:
+  Max: 5

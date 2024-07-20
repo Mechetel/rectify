@@ -1,9 +1,9 @@
-require_relative "phone_form"
+require_relative 'phone_form'
 
 class ContactForm < Rectify::Form
   attribute :name,   String
   attribute :number, String
-  attribute :phones, Array[PhoneForm]
+  attribute :phones, [PhoneForm]
 
-  validates :name, :presence => true
+  validates :name, presence: true
 end

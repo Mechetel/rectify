@@ -37,7 +37,7 @@ module Rectify
 
         def start(_)
           ActiveSupport::Notifications
-            .subscribe("sql.active_record") do |_, start, finish, _, query|
+            .subscribe('sql.active_record') do |_, start, finish, _, query|
               query_stats.add(current_example, start, finish, query)
             end
         end

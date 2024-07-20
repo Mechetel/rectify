@@ -23,21 +23,21 @@ module Rectify
         end
 
         def header
-          puts ""
+          puts ''
           puts headers
-          puts "-" * headers.length
+          puts '-' * headers.length
         end
 
         def headers
-          target_header  = "Target".ljust(target_length)
-          type_header    = "Type".ljust(10)
-          queries_header = "Queries".rjust(7)
-          time_header    = "Time (s)".rjust(7)
+          target_header  = 'Target'.ljust(target_length)
+          type_header    = 'Type'.ljust(10)
+          queries_header = 'Queries'.rjust(7)
+          time_header    = 'Time (s)'.rjust(7)
 
           "#{target_header} | " \
-          "#{type_header} | " \
-          "#{queries_header} | " \
-          "#{time_header}"
+            "#{type_header} | " \
+            "#{queries_header} | " \
+            "#{time_header}"
         end
 
         def rows
@@ -52,8 +52,8 @@ module Rectify
         end
 
         def summary
-          puts ""
-          puts "Database Queries: #{query_stats.total_queries} "\
+          puts ''
+          puts "Database Queries: #{query_stats.total_queries} " \
                "in #{query_stats.total_time}s"
         end
       end

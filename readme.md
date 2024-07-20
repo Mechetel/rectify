@@ -1,9 +1,5 @@
 # Rectify
 
-[![Code Climate](https://codeclimate.com/github/andypike/rectify/badges/gpa.svg)](https://codeclimate.com/github/andypike/rectify)
-[![Build Status](https://travis-ci.org/andypike/rectify.svg?branch=master)](https://travis-ci.org/andypike/rectify)
-[![Gem Version](https://badge.fury.io/rb/rectify.svg)](https://badge.fury.io/rb/rectify)
-
 Rectify is a gem that provides some lightweight classes that will make it easier
 to build Rails applications in a more maintainable way. It's built on top of
 several other gems and adds improved APIs to make things easier.
@@ -13,7 +9,7 @@ proved to be successful.
 
 ## Video
 
-In June 2016, I spoke at RubyC about Rectify and how it can be used to improve
+In June 2016, Andy Pike spoke at RubyC about Rectify and how it can be used to improve
 areas of your application. The full video and slides can be found here:
 
 [Building maintainable Rails apps - RubyC 2016](http://andypike.com/blog/conferences/rubyc-2016/)
@@ -23,7 +19,7 @@ areas of your application. The full video and slides can be found here:
 To install, add it to your `Gemfile`:
 
 ```ruby
-gem "rectify"
+gem 'rectify'
 ```
 
 Then use Bundler to install it:

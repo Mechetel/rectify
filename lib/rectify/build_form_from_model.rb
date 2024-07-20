@@ -9,7 +9,7 @@ module Rectify
       form.tap do
         matching_attributes.each do |a|
           model_value = model.public_send(a.name)
-          form.public_send("#{a.name}=", a.value_from(model_value))
+          form.public_send(:"#{a.name}=", a.value_from(model_value))
         end
 
         form.map_model(model)

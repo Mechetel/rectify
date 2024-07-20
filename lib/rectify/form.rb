@@ -39,10 +39,10 @@ module Rectify
     end
 
     def self.infer_model_name
-      class_name = name.split("::").last
-      return :form if class_name == "Form"
+      class_name = name.split('::').last
+      return :form if class_name == 'Form'
 
-      class_name.chomp("Form").underscore.to_sym
+      class_name.chomp('Form').underscore.to_sym
     end
 
     def self.model_name
@@ -55,11 +55,9 @@ module Rectify
     end
 
     def self.ensure_hash(object)
-      if object.is_a?(Hash)
-        object
-      else
-        {}
-      end
+      return object if object.is_a?(Hash)
+
+      {}
     end
 
     def persisted?
@@ -116,7 +114,7 @@ module Rectify
 
     def with_context(new_context)
       @context = if new_context.is_a?(Hash)
-                   OpenStruct.new(new_context)
+                   OpenStruct.new(new_context) # rubocop:disable Style/OpenStructUse
                  else
                    new_context
                  end

@@ -1,49 +1,68 @@
 RSpec.describe Rectify::Command do
-  describe ".call" do
+  describe '.call' do
     let(:instance) { spy }
 
-    context "with no arguments" do
-      it "instantiates and invokes #call" do
-        expect(NoArgsCommand).to receive(:new).with(no_args) { instance }
-        expect(instance).to receive(:call)
+    context 'with no arguments' do
+      it 'instantiates and invokes #call' do
+        allow(NoArgsCommand).to receive(:new).with(no_args) { instance }
+        allow(instance).to receive(:call)
 
         NoArgsCommand.call
+
+        expect(NoArgsCommand).to have_received(:new).with(no_args) { instance }
+        expect(instance).to have_received(:call)
       end
 
-      it "returns broadcast events with their result (single)" do
+      it 'returns broadcast events with their result (single)' do
         events = ReturnSingleResultCommand.call
 
-        expect(events).to eq(:ok => "This is a result")
+        expect(events).to eq(ok: 'This is a result')
       end
 
-      it "returns broadcast events with their result (multiple)" do
+      it 'returns broadcast events with their result (multiple)' do
         events = ReturnMultiResultCommand.call
 
-        expect(events).to eq(:ok => [1, 2, 3])
+        expect(events).to eq(ok: [1, 2, 3])
       end
 
-      it "returns broadcast all events with their result" do
+      it 'returns broadcast all events with their result' do
         events = ReturnMultiEventMultiResultCommand.call
 
         expect(events).to eq(
-          :ok        => [1, 2, 3],
-          :published => "The command works",
-          :next      => []
+          ok: [1, 2, 3],
+          published: 'The command works',
+          next: []
         )
       end
     end
 
-    context "with arguments" do
-      it "instantiates with the same arguments and invokes #call" do
-        expect(ArgsCommand).to receive(:new).with(:a, :b, :c) { instance }
-        expect(instance).to receive(:call)
+    context 'with arguments' do
+      it 'instantiates with the same arguments and invokes #call' do
+        allow(ArgsCommand).to receive(:new).with(:a, :b, :c) { instance }
+        allow(instance).to receive(:call)
 
         ArgsCommand.call(:a, :b, :c)
+
+        expect(ArgsCommand).to have_received(:new).with(:a, :b, :c) { instance }
+        expect(instance).to have_received(:call)
+      end
+
+      it 'supports named arguments' do
+        NamedArgsCommand.call(
+          'Andy',
+          'Pike',
+          height: 185,
+          location: 'UK',
+          hobbies: ['running', 'climbing', 'fishing with grenades']
+        ) do
+          on(:ok) { |message| expect(message).to be_a(String) }
+        end
       end
     end
   end
 
-  describe "#on" do
+  # rubocop:disable RSpec/InstanceVariable
+  describe '#on' do
     def success
       @success = true
     end
@@ -58,7 +77,7 @@ RSpec.describe Rectify::Command do
 
     private :something_private
 
-    it "calls public methods on the caller" do
+    it 'calls public methods on the caller' do
       @success = false
       @failure = false
 
@@ -71,7 +90,7 @@ RSpec.describe Rectify::Command do
       expect(@failure).to be(false)
     end
 
-    it "calls private methods on the caller" do
+    it 'calls private methods on the caller' do
       @private = false
 
       SuccessCommand.call do
@@ -81,4 +100,5 @@ RSpec.describe Rectify::Command do
       expect(@private).to be(true)
     end
   end
+  # rubocop:enable RSpec/InstanceVariable
 end

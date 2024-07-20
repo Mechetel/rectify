@@ -15,11 +15,11 @@ module Rectify
       !valid?
     end
 
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *args, &)
       if attributes.key?(method_name)
         attributes[method_name]
-      elsif method_name.to_s.ends_with?("=")
-        attribute_name = method_name.to_s.chomp("=").to_sym
+      elsif method_name.to_s.ends_with?('=')
+        attribute_name = method_name.to_s.chomp('=').to_sym
         attributes[attribute_name] = args.first
       else
         super
