@@ -154,6 +154,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-23
+  x86_64-linux
 
 DEPENDENCIES
   awesome_print (~> 1.9, >= 1.9.2)
