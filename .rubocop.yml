@@ -11,12 +11,6 @@ AllCops:
     - 'bin/**/*'
     - 'spec/db/schema.rb'
 
-Gemspec/AddRuntimeDependency:
-  Enabled: true
-
-Gemspec/DeprecatedAttributeAssignment:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
