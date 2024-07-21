@@ -33,7 +33,6 @@ jobs:
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.4
           bundler-cache: true
       - name: Rubocop
-        uses: reclaim-the-stack/rubocop-action@v1
+        run: bundle exec rubocop --parallel
