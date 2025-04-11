@@ -1,56 +1,73 @@
-# Stolen from https://gist.github.com/schickling/6762581
 require 'yaml'
 require 'active_record'
+require 'fileutils'
 
 namespace :db do
-  db_config = YAML.safe_load(File.open('spec/config/database.yml'))
-
   desc 'Migrate the database'
-  task :migrate do
-    ActiveRecord::Base.establish_connection(db_config)
+  task :migrate, [:environment] => :load_config do |t, args|
+    migration_path = 'spec/db/migrate'
+    ActiveRecord::Migration.verbose = true
 
-    if ActiveRecord.version.release < Gem::Version.new('5.2.0')
-      ActiveRecord::Migrator.migrate('spec/db/migrate')
-    else
-      ActiveRecord::MigrationContext.new('spec/db/migrate').migrate
-    end
+    context = ActiveRecord::MigrationContext.new(migration_path)
+    context.migrate
 
-    Rake::Task['db:schema'].invoke
-    puts 'Database migrated.'
+    puts '✅ Database migrated.'
   end
 
   desc 'Create a db/schema.rb file that is portable against any supported DB'
-  task :schema do
-    ActiveRecord::Base.establish_connection(db_config)
+  task :schema, [:environment] => :load_config do
     require 'active_record/schema_dumper'
     filename = 'spec/db/schema.rb'
+    FileUtils.mkdir_p(File.dirname(filename))
+
     File.open(filename, 'w:utf-8') do |file|
-      ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+      connection = ActiveRecord::Base.connection
+      ActiveRecord::SchemaDumper.dump(connection.pool, file)
     end
+
+    puts '📄 schema.rb dumped.'
+  end
+
+  desc 'Load database configuration'
+  task :load_config do
+    env = ENV['RAILS_ENV'] || 'development'
+    config_path = 'spec/config/database.yml'
+    unless File.exist?(config_path)
+      raise "❌ Database config file not found: #{config_path}"
+    end
+
+    db_config = YAML.safe_load(File.read(config_path), aliases: true)[env]
+    unless db_config
+      raise "❌ No configuration found for environment: #{env}"
+    end
+
+    ActiveRecord::Base.establish_connection(db_config)
   end
 end
 
-namespace :g do
-  desc 'Generate migration'
-  task :migration do
-    name      = ARGV[1] || raise('Specify name: rake g:migration name')
+namespace :generate do
+  desc 'Generate migration (usage: rake generate:migration[name])'
+  task :migration, [:name] do |_, args|
+    raise '❌ Specify name: rake generate:migration[name]' unless args[:name]
+
+    name = args[:name]
     timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-    folder    = '../spec/db/migrate'
-    path      = File.expand_path("#{folder}/#{timestamp}_#{name}.rb", __FILE__)
+    folder = 'spec/db/migrate'
+    FileUtils.mkdir_p(folder)
+    path = File.join(folder, "#{timestamp}_#{name}.rb")
 
     migration_class = name.split('_').map(&:capitalize).join
 
     File.write(
       path,
       <<~MIGRATION
-        class #{migration_class} < ActiveRecord::Migration[7.1]
+        class #{migration_class} < ActiveRecord::Migration[8.0]
           def change
           end
         end
       MIGRATION
     )
 
-    puts "Migration #{path} created"
-    abort # needed stop other tasks
+    puts "🛠 Migration created: #{path}"
   end
 end

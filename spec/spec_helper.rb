@@ -11,7 +11,8 @@ Dir['spec/fixtures/**/*.rb'].each { |f| require File.expand_path(f) }
 
 system('rake db:migrate')
 
-db_config = YAML.safe_load(File.open('spec/config/database.yml'))
+env = ENV['RAILS_ENV'] || 'development'
+db_config = YAML.safe_load(File.read('spec/config/database.yml'), aliases: true)[env]
 ActiveRecord::Base.establish_connection(db_config)
 
 RSpec.configure do |config|

@@ -1,4 +1,4 @@
-class AddActiveToUsers < ActiveRecord::Migration[4.2]
+class AddActiveToUsers < ActiveRecord::Migration[8.0]
   def change
     add_column :users, :active, :boolean, null: false, default: true
   end
