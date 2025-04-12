@@ -18,7 +18,6 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri']    = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/Mechetel'
-  spec.metadata['changelog_uri']   = 'https://github.com/Mechetel'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.bindir        = 'bin'
