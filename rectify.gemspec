@@ -24,10 +24,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'actionpack',    '>= 7.2.2'
-  spec.add_dependency 'activemodel',   '>= 7.2.2'
-  spec.add_dependency 'activerecord',  '>= 7.2.2'
-  spec.add_dependency 'activesupport', '>= 7.2.2'
+  spec.add_dependency 'actionpack',    '~> 8.0'
+  spec.add_dependency 'activemodel',   '~> 8.0'
+  spec.add_dependency 'activerecord',  '~> 8.0'
+  spec.add_dependency 'activesupport', '~> 8.0'
   spec.add_dependency 'virtus',        '~> 2.0'
   spec.add_dependency 'wisper',        '~> 3.0'
 end
